@@ -56,10 +56,10 @@ public class ConverterTests
             .WithCryptocurrency(CryptocurrencyName.Litecoin, 67.72);
 
         // Act 
-        var action = () => { converter.SetPricePerUnit(CryptocurrencyName.Litecoin, updatedPrice); };
+        var updatingWithInvalidPrice = () => { converter.SetPricePerUnit(CryptocurrencyName.Litecoin, updatedPrice); };
 
         // Assert
-        action.Should().Throw<ArgumentException>();
+        updatingWithInvalidPrice.Should().Throw<ArgumentException>();
     }
 
     //Convert
