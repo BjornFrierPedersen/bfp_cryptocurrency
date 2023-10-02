@@ -16,7 +16,7 @@ public class Converter
     /// <param name="price">Prisen på en enhed af valutaen målt i dollars. Prisen kan ikke være negativ</param>
     public void SetPricePerUnit(String currencyName, double price)
     {
-        if (price < 0) throw new ArgumentException($"{nameof(price)} cannot be a negative number");
+        if (price <= 0) throw new ArgumentException($"{nameof(price)} must be larger than 0");
             
         var cryptocurrencyNameMap = _cryptocurrencyHandler.GetCryptocurrencyEnumFromString(currencyName);
         
@@ -44,6 +44,8 @@ public class Converter
     /// <returns>Værdien af beløbet i toCurrencyName</returns>
     public double Convert(String fromCurrencyName, String toCurrencyName, double amount)
     {
+        if(amount <= 0) throw new ArgumentException($"{nameof(amount)} must be larger than 0");
+        
         var fromCryptocurrencyNameMap = _cryptocurrencyHandler.GetCryptocurrencyEnumFromString(fromCurrencyName);
         var toCryptocurrencyNameMap = _cryptocurrencyHandler.GetCryptocurrencyEnumFromString(toCurrencyName);
 

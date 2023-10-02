@@ -18,4 +18,12 @@ public class TestContextBuilder : Converter
     {
         SetPricePerUnit(_handler.GetCryptocurrencyNameFromEnum(name), price);
     }
+
+    public double Convert(CryptocurrencyConfig.CryptocurrencyName fromCryptocurrency,
+        CryptocurrencyConfig.CryptocurrencyName toCryptocurrency, double amount)
+    {
+        var fromCryptocurrencyString = _handler.GetCryptocurrencyNameFromEnum(fromCryptocurrency);
+        var toCryptocurrencyString = _handler.GetCryptocurrencyNameFromEnum(toCryptocurrency);
+        return Convert(fromCryptocurrencyString, toCryptocurrencyString, amount);
+    }
 }

@@ -7,9 +7,11 @@ namespace CryptoCurrency.Tests;
 
 public class ConverterTests 
 {
-    // SetPricePerUnit
-    // To Ækvivilenpartioner:
-    // Den første (1) med en helt ny værdi og den næste (2) med 2 ækvivilensgrænseværdier - 1 (Helt ny), 2 (Pris 1 og -1)
+    //SetPricePerUnit
+    //Ækvivalenspartition 1: Når prisen skal indstilles for en ny kryptocurrency (tilføjer en ny kryptocurrency til listen).
+    //Ækvivalenspartition 2: Når prisen skal indstilles for en eksisterende kryptocurrency med en gyldig ny pris (opdaterer prisen).
+    //Ækvivalenspartition 3: Når prisen skal indstilles for en eksisterende kryptocurrency med en ugyldig ny pris (f.eks. 0 eller negativ værdi).
+
     
     [Fact]
     public void When_setting_price_for_new_cryptocurrency_a_new_cryptocurrency_is_added_to_the_list()
@@ -28,7 +30,7 @@ public class ConverterTests
     }
     
     [Fact]
-    public void When_setting_price_for_existing_cryptocurrency_the_price_gets_updated()
+    public void When_setting_price_for_existing_cryptocurrency_with_valid_price_the_price_gets_updated()
     {
         // Arrange
         var converter = new TestContextBuilder()
@@ -44,20 +46,77 @@ public class ConverterTests
         priceAfter.Should().Be(1);
     }
     
-    [Fact]
-    public void Setting_a_negative_price_for_existing_cryptocurrency_throws_ArgumentException()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void When_setting_price_for_existing_cryptocurrency_with_invalid_price_throws_ArgumentException(double updatedPrice)
     {
         // Arrange
         var converter = new TestContextBuilder()
             .WithCryptocurrency(CryptocurrencyName.Litecoin, 67.72);
 
         // Act 
-        var settingNegativePriceForCryptocurrency = () => { converter.SetPricePerUnit(CryptocurrencyName.Litecoin, -1); };
+        var action = () => { converter.SetPricePerUnit(CryptocurrencyName.Litecoin, updatedPrice); };
 
         // Assert
-        settingNegativePriceForCryptocurrency.Should().Throw<ArgumentException>();
+        action.Should().Throw<ArgumentException>();
+    }
+
+    //Convert
+    //Ækvivalenspartition 1: Når konvertering udføres mellem to kryptokurser, der begge findes i den interne liste (gyldig konvertering).
+    //Ækvivalenspartition 2: Når konvertering forsøges fra en kryptocurrency, der findes i listen, til en kryptocurrency, der ikke findes i listen (ugyldig konvertering).
+    //Ækvivalenspartition 3: Når konvertering forsøges med en ugyldig mængde (f.eks. negativ eller nul mængde).
+
+    [Fact]
+    public void Converting_one_bitcoin_shares_to_litecoin_shares_when_they_exist_in_the_internal_list_returns_valid_result()
+    {
+        // Arrange
+        var converter = new TestContextBuilder()
+            .WithCryptocurrency(CryptocurrencyName.Bitcoin, 28312.70)
+            .WithCryptocurrency(CryptocurrencyName.Litecoin, 67.44);
+        
+        // Act 
+        var amountOfConvertedLitecoinShares = 
+            converter.Convert(CryptocurrencyName.Bitcoin, CryptocurrencyName.Litecoin, 1);
+
+        // Assert
+        amountOfConvertedLitecoinShares.Should().Be(419.82);
     }
     
-    // Convert
-    // 
+    [Fact]
+    public void Converting_from_a_cryptocurrency_that_exists_to_one_that_does_not_exist_throws_ArgumentException()
+    {
+        // Arrange
+        var converter = new TestContextBuilder()
+            .WithCryptocurrency(CryptocurrencyName.Bitcoin, 28312.70);
+        
+        // Act 
+        var conversionWithNonexistingCryptecurrency = () =>
+        {
+            converter.Convert(CryptocurrencyName.Bitcoin, CryptocurrencyName.Litecoin, 2);
+        };
+
+        // Assert
+        conversionWithNonexistingCryptecurrency.Should().Throw<ArgumentException>();
+    }
+    
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Converting_from_a_cryptocurrency_with_a_invalid_amount_throws_ArgumentException(int amount)
+    {
+        // Arrange
+        var converter = new TestContextBuilder()
+            .WithCryptocurrency(CryptocurrencyName.Bitcoin, 28312.70)
+            .WithCryptocurrency(CryptocurrencyName.Litecoin, 67.44);
+        
+        // Act 
+        var conversionWithNonexistingCryptecurrency = () =>
+        {
+            converter.Convert(CryptocurrencyName.Bitcoin, CryptocurrencyName.Litecoin, amount);
+        };
+
+        // Assert
+        conversionWithNonexistingCryptecurrency.Should().Throw<ArgumentException>();
+    }
 }
