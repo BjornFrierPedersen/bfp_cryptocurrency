@@ -115,12 +115,12 @@ public class ConverterTests
             .WithCryptocurrency(CryptocurrencyName.Litecoin, 67.44);
         
         // Act 
-        var conversionWithNonValidAmount = () =>
+        var conversionWithInvalidAmount = () =>
         {
             converter.Convert(CryptocurrencyName.Bitcoin, CryptocurrencyName.Litecoin, amount);
         };
 
         // Assert
-        conversionWithNonValidAmount.Should().Throw<ArgumentException>();
+        conversionWithInvalidAmount.Should().Throw<ArgumentException>();
     }
 }
