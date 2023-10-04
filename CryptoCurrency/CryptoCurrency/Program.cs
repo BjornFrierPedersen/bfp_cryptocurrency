@@ -22,7 +22,7 @@ public static class Program
             0.064);
         
         // Conversion
-        var amount = converter.Convert(
+       converter.Convert(
             CryptocurrencyHandler.GetCryptocurrencyNameFromEnum(CryptocurrencyConfig.CryptocurrencyName.Bitcoin),
             CryptocurrencyHandler.GetCryptocurrencyNameFromEnum(CryptocurrencyConfig.CryptocurrencyName.Dogecoin),
             2);

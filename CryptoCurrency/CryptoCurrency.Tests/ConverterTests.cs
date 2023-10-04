@@ -1,4 +1,3 @@
-using CryptoCurrencyTests;
 using FluentAssertions;
 using Xunit;
 using static CryptoCurrency.CryptocurrencyConfig;
@@ -12,7 +11,7 @@ public class ConverterTests
     //Ækvivalenspartition 2: Når prisen skal indstilles for en eksisterende kryptocurrency med en gyldig ny pris (opdaterer prisen).
     //Ækvivalenspartition 3: Når prisen skal indstilles for en eksisterende kryptocurrency med en ugyldig ny pris (f.eks. 0 eller negativ værdi).
 
-    
+    // Ækvivalenspartition 1
     [Fact]
     public void When_setting_price_for_new_cryptocurrency_a_new_cryptocurrency_is_added_to_the_list()
     {
@@ -29,6 +28,7 @@ public class ConverterTests
         amountOfCryptocurrenciesAfter.Should().Be(1);
     }
     
+    // Ækvivalenspartition 2
     [Fact]
     public void When_setting_price_for_existing_cryptocurrency_with_valid_price_the_price_gets_updated()
     {
@@ -46,6 +46,7 @@ public class ConverterTests
         priceAfter.Should().Be(1);
     }
     
+    // Ækvivalenspartition 3
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
@@ -67,6 +68,7 @@ public class ConverterTests
     //Ækvivalenspartition 2: Når konvertering forsøges fra en kryptocurrency, der findes i listen, til en kryptocurrency, der ikke findes i listen (ugyldig konvertering).
     //Ækvivalenspartition 3: Når konvertering forsøges med en ugyldig mængde (f.eks. negativ eller nul mængde).
 
+    // Ækvivalenspartition 1
     [Fact]
     public void Converting_one_bitcoin_shares_to_litecoin_shares_when_they_exist_in_the_internal_list_returns_valid_result()
     {
@@ -83,6 +85,7 @@ public class ConverterTests
         amountOfConvertedLitecoinShares.Should().Be(419.82);
     }
     
+    // Ækvivalenspartition 2
     [Fact]
     public void Converting_from_a_cryptocurrency_that_exists_to_one_that_does_not_exist_throws_ArgumentException()
     {
@@ -100,6 +103,7 @@ public class ConverterTests
         conversionWithNonexistingCryptecurrency.Should().Throw<ArgumentException>();
     }
     
+    // Ækvivalenspartition 3
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
@@ -111,12 +115,12 @@ public class ConverterTests
             .WithCryptocurrency(CryptocurrencyName.Litecoin, 67.44);
         
         // Act 
-        var conversionWithNonexistingCryptecurrency = () =>
+        var conversionWithNonValidAmount = () =>
         {
             converter.Convert(CryptocurrencyName.Bitcoin, CryptocurrencyName.Litecoin, amount);
         };
 
         // Assert
-        conversionWithNonexistingCryptecurrency.Should().Throw<ArgumentException>();
+        conversionWithNonValidAmount.Should().Throw<ArgumentException>();
     }
 }

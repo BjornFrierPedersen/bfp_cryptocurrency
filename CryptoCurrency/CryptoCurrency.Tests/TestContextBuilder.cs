@@ -1,6 +1,4 @@
-using CryptoCurrency;
-
-namespace CryptoCurrencyTests;
+namespace CryptoCurrency.Tests;
 
 public class TestContextBuilder : Converter
 {
