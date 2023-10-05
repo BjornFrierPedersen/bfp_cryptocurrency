@@ -45,7 +45,7 @@ public class Converter
         var convertedAmount = Math.Round(sumOfConverted / toCryptocurrency.Price, 2);
 
         Console.WriteLine(
-            $"Converting {amount} of {fromCurrencyName} cryptocurrency totaling {sumOfConverted} USD to {convertedAmount} shares of {toCurrencyName} cryptocurrency.");
+            $"Converting {amount} {fromCurrencyName} totaling {sumOfConverted} USD to {convertedAmount} {toCurrencyName}.");
         return convertedAmount;
     }
 }

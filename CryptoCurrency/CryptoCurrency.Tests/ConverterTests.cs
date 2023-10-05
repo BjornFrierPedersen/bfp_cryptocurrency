@@ -70,7 +70,7 @@ public class ConverterTests
 
     // Ækvivalenspartition 1
     [Fact]
-    public void Converting_one_bitcoin_shares_to_litecoin_shares_when_they_exist_in_the_internal_list_returns_valid_result()
+    public void Converting_one_bitcoin_to_litecoins_when_they_exist_in_the_internal_list_returns_converted_amount()
     {
         // Arrange
         var converter = new TestContextBuilder()
