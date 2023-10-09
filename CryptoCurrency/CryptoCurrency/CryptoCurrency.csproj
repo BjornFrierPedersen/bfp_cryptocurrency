@@ -12,5 +12,8 @@
     <PackageReference Include="xunit" Version="2.5.1-pre.33" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.1-pre.15" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Medstuderende_Loesninger\Medstuderende_Loesninger.csproj" />
+  </ItemGroup>
 </Project>
 

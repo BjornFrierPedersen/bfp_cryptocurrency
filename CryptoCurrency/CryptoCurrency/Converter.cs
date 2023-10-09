@@ -1,10 +1,12 @@
+using Medstuderende_Loesninger;
+
 namespace CryptoCurrency;
 
-public class Converter
+public class Converter : ICryptocurrencyConverter
 {
     private readonly CryptocurrencyHandler _cryptocurrencyHandler = new();
 
-    protected Dictionary<CryptocurrencyConfig.CryptocurrencyName, Cryptocurrency> Cryptocurrencies { get; } = new();
+    public Dictionary<CryptocurrencyConfig.CryptocurrencyName, Cryptocurrency> Cryptocurrencies { get; } = new();
     
     /// <summary>
     /// Angiver prisen for en enhed af en kryptovaluta. Prisen angives i dollars.

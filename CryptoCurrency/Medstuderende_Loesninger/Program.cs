@@ -1,0 +1,1 @@
+﻿Console.WriteLine("Medstuderendes cryptocurrency løsninger");
